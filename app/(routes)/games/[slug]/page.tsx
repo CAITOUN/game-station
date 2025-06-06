@@ -11,15 +11,20 @@ import { SimilarGames } from "@/components/ui/SimilarGames";
 
 import { getGameById, getGamesByCategory } from "@/lib/games";
 
+// Define params type that meets Next.js requirements
 interface GamePageProps {
   params: {
     slug: string;
   };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 export async function generateMetadata({ params }: GamePageProps): Promise<Metadata> {
+  // Ensure params are resolved
+  const resolvedParams = await Promise.resolve(params);
+  
   // Convert slug to game ID safely
-  const gameId = parseInt(params.slug, 10);
+  const gameId = parseInt(resolvedParams.slug, 10);
   const game = getGameById(gameId);
   
   if (!game) {
@@ -41,8 +46,11 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
 }
 
 export default async function GamePage({ params }: GamePageProps) {
+  // Ensure params are resolved
+  const resolvedParams = await Promise.resolve(params);
+  
   // Convert slug to game ID safely
-  const gameId = parseInt(params.slug, 10);
+  const gameId = parseInt(resolvedParams.slug, 10);
   const game = getGameById(gameId);
   
   if (!game) {
@@ -52,9 +60,6 @@ export default async function GamePage({ params }: GamePageProps) {
   // Get the first tag to use for similar games
   const firstTag = game.tags.split(",")[0].trim();
   const similarGames = getGamesByCategory(firstTag, 4).filter(g => g.id !== game.id);
-  
-  // Extract tags for display
-  const gameCategories = game.tags.toLowerCase().split(",").map(tag => tag.trim());
   
   // Extract tags for display
   const tagList = game.tags.split(",").map(tag => tag.trim());

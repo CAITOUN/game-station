@@ -7,7 +7,7 @@ interface FullscreenButtonProps {
   targetId: string;
 }
 
-// 创建接口扩展Document和HTMLElement类型
+// Define interfaces that extend Document and HTMLElement types
 interface FullscreenDocument extends Document {
   webkitExitFullscreen?: () => Promise<void>;
   msExitFullscreen?: () => Promise<void>;

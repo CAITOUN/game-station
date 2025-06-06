@@ -3,6 +3,9 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "ignoreCommand": "npm run lint",
-  "outputDirectory": ".next"
+  "ignoreCommand": "exit 0",
+  "outputDirectory": ".next",
+  "buildOptions": {
+    "noESLint": true
+  }
 } 

@@ -8,10 +8,10 @@ interface GameTagsProps {
 }
 
 export function GameTags({ tags, className, limit }: GameTagsProps) {
-  // 将标签字符串转换为数组
+  // Convert tag string to array
   const tagList = tags.split(",").map(tag => tag.trim()).filter(Boolean);
   
-  // 如果有限制，则只显示指定数量的标签
+  // If there's a limit, only show the specified number of tags
   const displayTags = limit ? tagList.slice(0, limit) : tagList;
   
   return (

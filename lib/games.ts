@@ -10,7 +10,7 @@ export interface Game {
   description: string;
 }
 
-// 为从JSON文件读取的游戏数据定义接口
+// Interface for game data read from JSON file
 interface GameData {
   title: string;
   embed: string;
@@ -50,28 +50,28 @@ export function loadGames(): Game[] {
 
 export function getFeaturedGames(count: number = 6): Game[] {
   const games = loadGames();
-  // 从所有游戏中随机选择一些作为精选游戏
-  // 为了保持一致性，这里使用固定种子
+  // Randomly select games as featured games
+  // Using a fixed seed for consistency
   const shuffled = [...games].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }
 
 export function getNewGames(count: number = 8): Game[] {
   const games = loadGames();
-  // 取最新添加的游戏（假设数组中靠后的是较新的游戏）
+  // Get the most recently added games (assuming games at the end of the array are newer)
   return games.slice(-count);
 }
 
 export function getGamesByCategory(category: string, count: number = 8): Game[] {
   const games = loadGames();
   
-  // 过滤包含指定标签的游戏
+  // Filter games that include the specified tag
   const filteredGames = games.filter(game => 
     game.tags.toLowerCase().split(',').map(tag => tag.trim()).includes(category.toLowerCase()) ||
     game.tags.toLowerCase().includes(category.toLowerCase())
   );
   
-  // 如果找不到足够的游戏，返回所有匹配的游戏
+  // If not enough games are found, return all matching games
   return filteredGames.slice(0, count);
 }
 
@@ -120,12 +120,12 @@ export function getAllTags(): { name: string, count: number }[] {
   return tagsArray.sort((a, b) => b.count - a.count);
 }
 
-// 获取所有游戏
+// Get all games
 export function getAllGames(): Game[] {
   return loadGames();
 }
 
-// 获取游戏总数
+// Get total game count
 export function getGamesCount(): number {
   return loadGames().length;
 }
