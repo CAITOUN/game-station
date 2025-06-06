@@ -23,35 +23,28 @@ export function MainLayout({ children }: MainLayoutProps) {
       <div className="flex flex-1 pt-16">
         {/* Sidebar - collapsible */}
         <div 
-          className={`fixed left-0 top-16 z-30 h-[calc(100vh-4rem)] transition-all duration-300 ${
+          className={`fixed left-0 top-16 bottom-0 z-30 transition-all duration-500 ease-in-out ${
             sidebarCollapsed ? "w-14" : "w-64"
-          } hidden md:block`}
+          } hidden md:block shadow-xl no-drag`}
+          style={{ 
+            bottom: 'auto',
+            height: 'calc(100vh - 4rem - 2.5rem)'
+          }}
         >
-          {/* Toggle button */}
-          <button 
-            onClick={toggleSidebar}
-            className="absolute right-0 top-4 z-40 flex h-6 w-6 items-center justify-center rounded-l-md bg-primary/80 text-white shadow-md transform translate-x-6 hover:bg-primary transition-all duration-300"
-            aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {sidebarCollapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
-            )}
-          </button>
-          
-          <div className="h-full overflow-hidden transition-all duration-300">
-            <Sidebar collapsed={sidebarCollapsed} />
+          <div className="h-full overflow-hidden transition-all duration-500 ease-in-out">
+            <Sidebar collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
           </div>
         </div>
         
         {/* Main content - adjusted based on sidebar state */}
-        <div className={`w-full transition-all duration-300 ${sidebarCollapsed ? "md:ml-14" : "md:ml-64"} flex-1`}>
+        <div className={`w-full transition-all duration-500 ease-in-out ${sidebarCollapsed ? "md:ml-14" : "md:ml-64"} flex-1`}>
           <main className="flex-1 overflow-y-auto min-h-[calc(100vh-4rem-3rem)]">
             {children}
           </main>
-          <Footer />
         </div>
+      </div>
+      <div className="mt-auto">
+        <Footer />
       </div>
     </div>
   );

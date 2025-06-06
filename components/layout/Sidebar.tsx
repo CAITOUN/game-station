@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Home, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Category {
@@ -20,9 +20,10 @@ interface SidebarProps {
   mobile?: boolean;
   onClose?: () => void;
   collapsed?: boolean;
+  onToggleCollapse?: () => void;
 }
 
-export function Sidebar({ mobile = false, onClose, collapsed = false }: SidebarProps) {
+export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCollapse }: SidebarProps) {
   // Sample categories data - in a real app, this might come from an API
   const categories: Category[] = [
     { name: "Action", icon: "🔥", slug: "action" },
@@ -93,43 +94,87 @@ export function Sidebar({ mobile = false, onClose, collapsed = false }: SidebarP
     }
   };
 
+  const handleAllGamesClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setActiveCategory(null);
+    router.push("/");
+    
+    // Close mobile sidebar if needed
+    if (mobile && onClose) {
+      onClose();
+    }
+  };
+
   // If collapsed, show only icons
   if (collapsed && !mobile) {
     return (
-      <aside className="h-full overflow-y-auto shadow-xl">
-        <div className="gradient-bg h-full py-4 px-2 border-r border-sidebar-border rounded-r-lg">
+      <aside className="h-full overflow-y-auto shadow-xl relative no-drag">
+        <div className="gradient-bg h-full py-4 px-2 border-r border-transparent bg-clip-border" 
+          style={{
+            backgroundImage: 'linear-gradient(to right, transparent, transparent), linear-gradient(to bottom, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.3))'
+          }}>
+          {/* Toggle button - 内嵌到侧边栏中 */}
+          {onToggleCollapse && (
+            <button 
+              onClick={onToggleCollapse}
+              className="absolute right-0 top-4 z-40 flex h-8 w-6 items-center justify-center text-white transition-colors duration-300 group overflow-hidden no-drag"
+              aria-label="Expand sidebar"
+            >
+              <div className="w-full h-full flex items-center justify-start pl-1 bg-gradient-to-r from-blue-400 to-purple-500">
+                <ChevronRight className="h-4 w-4" />
+              </div>
+            </button>
+          )}
+          
           {/* Mini logo or identifier */}
           <div className="mb-6 flex justify-center">
-            <span className="text-2xl font-bold" style={{
-              backgroundImage: "linear-gradient(to right, #60a5fa, #a855f7)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              color: "transparent"
-            }}>G</span>
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600">
+              <Gamepad2 className="h-5 w-5 text-white" />
+            </div>
           </div>
           
           <div className="space-y-6">
             <nav className="flex flex-col items-center space-y-4">
+              {/* All Games Button */}
+              <a
+                href="/"
+                className={`flex items-center justify-center rounded-full w-10 h-10 transition-all duration-300 relative overflow-hidden group ${
+                  activeCategory === null 
+                    ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary" 
+                    : "text-sidebar-foreground hover:text-primary"
+                }`}
+                onClick={handleAllGamesClick}
+                title="All Games"
+              >
+                <Home className="h-5 w-5 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+                <span className={`absolute bottom-0 left-0 right-0 mx-auto h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
+                  activeCategory === null ? "w-6" : "w-0 group-hover:w-6"
+                }`}></span>
+              </a>
+              
               {categories.map((category) => (
                 <a
                   key={category.slug}
                   href={`/#category-${category.slug}`}
-                  className={`flex items-center justify-center rounded-lg p-2 w-10 h-10 transition-all duration-300 hover:bg-accent/50 hover:text-accent-foreground ${
+                  className={`flex items-center justify-center rounded-full w-10 h-10 transition-all duration-300 relative overflow-hidden group ${
                     activeCategory === category.slug 
-                      ? "bg-primary/20 text-primary" 
-                      : "text-sidebar-foreground"
+                      ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary" 
+                      : "text-sidebar-foreground hover:text-primary"
                   }`}
                   onClick={(e) => handleCategoryClick(category.slug, e)}
                   title={category.name}
                 >
-                  <span className="text-xl">{category.icon}</span>
+                  <span className="text-xl relative z-10 transition-transform duration-300 group-hover:scale-110">{category.icon}</span>
+                  <span className={`absolute bottom-0 left-0 right-0 mx-auto h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
+                    activeCategory === category.slug ? "w-6" : "w-0 group-hover:w-6"
+                  }`}></span>
                 </a>
               ))}
             </nav>
             
-            {/* Mini popular tags indicator */}
-            <div className="flex justify-center">
-              <div className="w-8 h-1 bg-primary/20 rounded-full"></div>
+            {/* 固定位置的分隔指示器 */}
+            <div className="flex justify-center mt-4 mb-2">
+              <div className="w-6 h-[2px] bg-gradient-to-r from-blue-400/30 to-purple-500/30 rounded-full"></div>
             </div>
           </div>
         </div>
@@ -138,8 +183,11 @@ export function Sidebar({ mobile = false, onClose, collapsed = false }: SidebarP
   }
 
   return (
-    <aside className={`${mobile ? '' : 'h-full'} overflow-y-auto shadow-xl ${mobile ? '' : 'animate-float'}`}>
-      <div className={`gradient-bg h-full p-4 ${mobile ? '' : 'border-r border-sidebar-border rounded-r-lg'}`}>
+    <aside className={`${mobile ? '' : 'h-full'} overflow-y-auto shadow-xl relative no-drag`}>
+      <div className={`gradient-bg h-full p-4 ${mobile ? '' : 'border-r border-transparent bg-clip-border'}`} 
+        style={{
+          backgroundImage: mobile ? '' : 'linear-gradient(to right, transparent, transparent), linear-gradient(to bottom, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.3))'
+        }}>
         {mobile && onClose && (
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold tracking-tight" style={{
@@ -154,6 +202,18 @@ export function Sidebar({ mobile = false, onClose, collapsed = false }: SidebarP
           </div>
         )}
         
+        {!mobile && onToggleCollapse && (
+                      <button 
+              onClick={onToggleCollapse}
+              className="absolute right-0 top-4 z-40 flex h-8 w-6 items-center justify-center text-white transition-colors duration-300 group overflow-hidden no-drag"
+              aria-label="Collapse sidebar"
+            >
+            <div className="w-full h-full flex items-center justify-end pr-1 bg-gradient-to-r from-blue-400 to-purple-500">
+              <ChevronLeft className="h-4 w-4" />
+            </div>
+          </button>
+        )}
+        
         <div className="space-y-6">
           <div>
             <h2 className="mb-2 text-lg font-semibold tracking-tight" style={{
@@ -163,19 +223,39 @@ export function Sidebar({ mobile = false, onClose, collapsed = false }: SidebarP
               color: "transparent"
             }}>Categories</h2>
             <nav className="space-y-1">
+              {/* All Games Button */}
+              <a
+                href="/"
+                className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-300 relative overflow-hidden group ${
+                  activeCategory === null 
+                    ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary font-medium" 
+                    : "text-sidebar-foreground hover:text-primary"
+                }`}
+                onClick={handleAllGamesClick}
+              >
+                <Home className="h-4 w-4 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10">All Games</span>
+                <span className={`absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
+                  activeCategory === null ? "w-full" : "w-0 group-hover:w-full"
+                }`}></span>
+              </a>
+              
               {categories.map((category) => (
                 <a
                   key={category.slug}
                   href={`/#category-${category.slug}`}
-                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-300 hover:bg-accent/50 hover:text-accent-foreground hover:translate-x-1 ${
+                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-300 relative overflow-hidden group ${
                     activeCategory === category.slug 
-                      ? "bg-primary/20 text-primary translate-x-1" 
-                      : "text-sidebar-foreground"
+                      ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary font-medium" 
+                      : "text-sidebar-foreground hover:text-primary"
                   }`}
                   onClick={(e) => handleCategoryClick(category.slug, e)}
                 >
-                  <span className="text-xl">{category.icon}</span>
-                  <span>{category.name}</span>
+                  <span className="text-xl relative z-10 transition-transform duration-300 group-hover:scale-110">{category.icon}</span>
+                  <span className="relative z-10">{category.name}</span>
+                  <span className={`absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
+                    activeCategory === category.slug ? "w-full" : "w-0 group-hover:w-full"
+                  }`}></span>
                 </a>
               ))}
             </nav>
@@ -193,7 +273,7 @@ export function Sidebar({ mobile = false, onClose, collapsed = false }: SidebarP
                 <a
                   key={tag.name}
                   href={`/#tag-${tag.name}`}
-                  className="inline-flex items-center rounded-full bg-primary/10 border border-primary/20 px-2.5 py-0.5 text-xs font-medium text-primary hover:bg-primary/20 transition-all duration-300 hover:scale-105"
+                  className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-400/10 to-purple-500/10 border border-blue-400/20 px-2.5 py-0.5 text-xs font-medium text-primary hover:from-blue-400/20 hover:to-purple-500/20 transition-colors duration-300 hover:shadow-sm"
                   onClick={(e) => handleTagClick(tag.name, e)}
                 >
                   {tag.name}

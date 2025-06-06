@@ -61,7 +61,7 @@ export function FullscreenButton({ targetId }: FullscreenButtonProps) {
     <button
       type="button"
       onClick={toggleFullscreen}
-      className="absolute bottom-3 right-3 rounded-full bg-black/50 p-2 text-white hover:bg-black/70 transition-colors z-10"
+      className="absolute bottom-4 right-4 rounded-full bg-gradient-to-r from-blue-500/80 to-purple-600/80 p-3 text-white hover:from-blue-500 hover:to-purple-600 transition-all duration-300 shadow-lg backdrop-blur-sm z-20 transform hover:scale-105 hover:shadow-blue-500/20 hover:shadow-xl"
       aria-label={isFullscreen ? "Exit Fullscreen" : "Fullscreen Mode"}
     >
       {isFullscreen ? (
@@ -69,6 +69,7 @@ export function FullscreenButton({ targetId }: FullscreenButtonProps) {
       ) : (
         <Maximize className="h-5 w-5" />
       )}
+      <span className="absolute inset-0 rounded-full bg-blue-500/20 animate-ping"></span>
     </button>
   );
 } 
