@@ -1,103 +1,156 @@
-import Image from "next/image";
+import { MainLayout } from "@/components/layout/MainLayout";
+import { FeaturedGames } from "@/components/ui/FeaturedGames";
+import { GameGrid } from "@/components/ui/GameGrid";
+import { CategorySection } from "@/components/ui/CategorySection";
+import { 
+  getFeaturedGames, 
+  getNewGames, 
+  getGamesByCategory,
+  getAllGames,
+  getGamesCount
+} from "@/lib/games";
 
 export default function Home() {
+  // Get total game count
+  const totalGames = getGamesCount();
+  console.log(`Total games: ${totalGames}`);
+  
+  // Get game data
+  const featuredGames = getFeaturedGames(5);
+  const newGames = getNewGames(12);
+  
+  // Get games by categories
+  const actionGames = getGamesByCategory("action", 8);
+  const adventureGames = getGamesByCategory("adventure", 8);
+  const arcadeGames = getGamesByCategory("arcade", 8);
+  const puzzleGames = getGamesByCategory("puzzle", 8);
+  const racingGames = getGamesByCategory("racing", 8);
+  const shootingGames = getGamesByCategory("shooting", 8);
+  const sportsGames = getGamesByCategory("sports", 8);
+  const strategyGames = getGamesByCategory("strategy", 8);
+  
+  // Get games by popular tags
+  const games2d = getGamesByCategory("2d", 8);
+  const games3d = getGamesByCategory("3d", 8);
+  const carGames = getGamesByCategory("car", 8);
+  const drivingGames = getGamesByCategory("driving", 8);
+  const multiplayerGames = getGamesByCategory("multiplayer", 8);
+  
+  // Add some additional common tag games
+  const zombieGames = getGamesByCategory("zombie", 8);
+  const physicsGames = getGamesByCategory("physics", 8);
+  const simulatorGames = getGamesByCategory("simulator", 8);
+  const stuntGames = getGamesByCategory("stunt", 8);
+  
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+    <MainLayout>
+      <div className="container mx-auto px-4 py-8">
+        {/* Featured Games Section */}
+        <FeaturedGames games={featuredGames} />
+        
+        {/* New Games Section */}
+        <section className="py-8 scroll-mt-20" id="new-games">
+          <GameGrid
+            title="New Games"
+            games={newGames}
+            viewMoreLink="/#new-games"
+            columns={4}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+        </section>
+        
+        {/* Category Sections */}
+        <CategorySection title="Action Games" games={actionGames} slug="action" />
+        <CategorySection title="Adventure Games" games={adventureGames} slug="adventure" />
+        <CategorySection title="Arcade Games" games={arcadeGames} slug="arcade" />
+        <CategorySection title="Puzzle Games" games={puzzleGames} slug="puzzle" />
+        <CategorySection title="Racing Games" games={racingGames} slug="racing" />
+        <CategorySection title="Shooting Games" games={shootingGames} slug="shooting" />
+        <CategorySection title="Sports Games" games={sportsGames} slug="sports" />
+        <CategorySection title="Strategy Games" games={strategyGames} slug="strategy" />
+        
+        {/* Tag Sections */}
+        <section id="tag-2d" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="2D Games"
+            games={games2d}
+            viewMoreLink="/#tag-2d"
+            columns={4}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+        </section>
+        
+        <section id="tag-3d" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="3D Games"
+            games={games3d}
+            viewMoreLink="/#tag-3d"
+            columns={4}
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </section>
+        
+        <section id="tag-car" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="Car Games"
+            games={carGames}
+            viewMoreLink="/#tag-car"
+            columns={4}
+          />
+        </section>
+        
+        <section id="tag-driving" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="Driving Games"
+            games={drivingGames}
+            viewMoreLink="/#tag-driving"
+            columns={4}
+          />
+        </section>
+        
+        <section id="tag-multiplayer" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="Multiplayer Games"
+            games={multiplayerGames}
+            viewMoreLink="/#tag-multiplayer"
+            columns={4}
+          />
+        </section>
+        
+        {/* Additional Tag Sections */}
+        <section id="tag-zombie" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="Zombie Games"
+            games={zombieGames}
+            viewMoreLink="/#tag-zombie"
+            columns={4}
+          />
+        </section>
+        
+        <section id="tag-physics" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="Physics Games"
+            games={physicsGames}
+            viewMoreLink="/#tag-physics"
+            columns={4}
+          />
+        </section>
+        
+        <section id="tag-simulator" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="Simulator Games"
+            games={simulatorGames}
+            viewMoreLink="/#tag-simulator"
+            columns={4}
+          />
+        </section>
+        
+        <section id="tag-stunt" className="py-8 scroll-mt-20">
+          <GameGrid
+            title="Stunt Games"
+            games={stuntGames}
+            viewMoreLink="/#tag-stunt"
+            columns={4}
+          />
+        </section>
+      </div>
+    </MainLayout>
   );
 }
