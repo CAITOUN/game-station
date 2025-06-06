@@ -7,30 +7,44 @@ interface FullscreenButtonProps {
   targetId: string;
 }
 
+// 创建接口扩展Document和HTMLElement类型
+interface FullscreenDocument extends Document {
+  webkitExitFullscreen?: () => Promise<void>;
+  msExitFullscreen?: () => Promise<void>;
+  webkitFullscreenElement?: Element | null;
+  msFullscreenElement?: Element | null;
+}
+
+interface FullscreenElement extends HTMLElement {
+  webkitRequestFullscreen?: () => Promise<void>;
+  msRequestFullscreen?: () => Promise<void>;
+}
+
 export function FullscreenButton({ targetId }: FullscreenButtonProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const toggleFullscreen = useCallback(() => {
-    const element = document.getElementById(targetId);
+    const element = document.getElementById(targetId) as FullscreenElement | null;
     
     if (!element) return;
     
     if (!isFullscreen) {
       if (element.requestFullscreen) {
         element.requestFullscreen();
-      } else if ((element as any).webkitRequestFullscreen) {
-        (element as any).webkitRequestFullscreen();
-      } else if ((element as any).msRequestFullscreen) {
-        (element as any).msRequestFullscreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
       }
       setIsFullscreen(true);
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if ((document as any).webkitExitFullscreen) {
-        (document as any).webkitExitFullscreen();
-      } else if ((document as any).msExitFullscreen) {
-        (document as any).msExitFullscreen();
+      const doc = document as FullscreenDocument;
+      if (doc.exitFullscreen) {
+        doc.exitFullscreen();
+      } else if (doc.webkitExitFullscreen) {
+        doc.webkitExitFullscreen();
+      } else if (doc.msExitFullscreen) {
+        doc.msExitFullscreen();
       }
       setIsFullscreen(false);
     }
@@ -39,10 +53,11 @@ export function FullscreenButton({ targetId }: FullscreenButtonProps) {
   // Monitor fullscreen state changes
   useEffect(() => {
     const handleFullscreenChange = () => {
+      const doc = document as FullscreenDocument;
       setIsFullscreen(
-        document.fullscreenElement !== null ||
-        (document as any).webkitFullscreenElement !== null ||
-        (document as any).msFullscreenElement !== null
+        doc.fullscreenElement !== null ||
+        doc.webkitFullscreenElement !== null ||
+        doc.msFullscreenElement !== null
       );
     };
 

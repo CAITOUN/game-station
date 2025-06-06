@@ -7,7 +7,6 @@ import { ArrowLeft, Clock, Gamepad2 } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { GameFrame } from "@/components/ui/GameFrame";
 import { FullscreenButton } from "@/components/ui/FullscreenButton";
-import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SimilarGames } from "@/components/ui/SimilarGames";
 
 import { getGameById, getGamesByCategory } from "@/lib/games";
@@ -31,10 +30,10 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
   }
   
   return {
-    title: `${game.title} - Game Station`,
+    title: `${game.title} - GamePlayGo`,
     description: game.description,
     openGraph: {
-      title: `${game.title} - Game Station`,
+      title: `${game.title} - GamePlayGo`,
       description: game.description,
       images: [{ url: game.image, width: 1200, height: 630, alt: game.title }]
     }
@@ -54,10 +53,8 @@ export default async function GamePage({ params }: GamePageProps) {
   const firstTag = game.tags.split(",")[0].trim();
   const similarGames = getGamesByCategory(firstTag, 4).filter(g => g.id !== game.id);
   
-  // Determine the category for breadcrumb
-  const categories = ["action", "adventure", "arcade", "puzzle", "racing", "shooting", "sports", "strategy"];
+  // Extract tags for display
   const gameCategories = game.tags.toLowerCase().split(",").map(tag => tag.trim());
-  const category = categories.find(cat => gameCategories.includes(cat)) || "games";
   
   // Extract tags for display
   const tagList = game.tags.split(",").map(tag => tag.trim());

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+
 
 interface MainLayoutProps {
   children: React.ReactNode;

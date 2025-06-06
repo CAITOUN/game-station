@@ -6,7 +6,6 @@ import {
   getFeaturedGames, 
   getNewGames, 
   getGamesByCategory,
-  getAllGames,
   getGamesCount
 } from "@/lib/games";
 

@@ -1,14 +1,15 @@
 import { SimpleLayout } from "@/components/layout/SimpleLayout";
+import Link from "next/link";
 
 export default function AboutPage() {
   return (
     <SimpleLayout>
       <div className="py-8 md:py-12">
-        <h1 className="text-3xl font-bold tracking-tight mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">About GameStation</h1>
+        <h1 className="text-3xl font-bold tracking-tight mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">About GamePlayGo</h1>
         
         <div className="space-y-6 max-w-3xl">
           <p className="text-lg">
-            GameStation is a curated platform for browser-based games that are free to play. 
+            GamePlayGo is a curated platform for browser-based games that are free to play. 
             Our mission is to provide a fun and accessible gaming experience without the need for downloads or installations.
           </p>
           
@@ -24,13 +25,13 @@ export default function AboutPage() {
           <div className="rounded-lg p-6 gradient-border">
             <h2 className="text-xl font-semibold mb-3">For Developers</h2>
             <p>
-              Are you a game developer? We're always looking to expand our collection with high-quality games. 
+              Are you a game developer? We&apos;re always looking to expand our collection with high-quality games. 
               Contact us to learn more about featuring your game on our platform.
             </p>
           </div>
           
           <div className="flex justify-center mt-12 mb-4">
-            <a 
+            <Link 
               href="/" 
               className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:from-blue-600 hover:to-purple-600 transform hover:translate-y-[-2px]"
             >
@@ -39,7 +40,7 @@ export default function AboutPage() {
                 <path d="M19 12H5"/>
               </svg>
               Return to Game Collection
-            </a>
+            </Link>
           </div>
         </div>
       </div>

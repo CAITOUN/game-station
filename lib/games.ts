@@ -10,6 +10,15 @@ export interface Game {
   description: string;
 }
 
+// 为从JSON文件读取的游戏数据定义接口
+interface GameData {
+  title: string;
+  embed: string;
+  image: string;
+  tags: string;
+  description: string;
+}
+
 let gamesCache: Game[] | null = null;
 
 export function loadGames(): Game[] {
@@ -24,7 +33,7 @@ export function loadGames(): Game[] {
     const gamesData = JSON.parse(fileContents);
     
     // Add an ID to each game (based on its position in the array)
-    const games: Game[] = gamesData.map((game: any, index: number) => ({
+    const games: Game[] = gamesData.map((game: GameData, index: number) => ({
       id: index + 1,
       ...game,
     }));
