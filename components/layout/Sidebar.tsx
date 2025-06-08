@@ -49,10 +49,7 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
       { name: "3d", count: 35 },
       { name: "car", count: 28 },
       { name: "driving", count: 25 },
-      { name: "free", count: 50 },
       { name: "multiplayer", count: 18 },
-      { name: "racing", count: 22 },
-      { name: "shooting", count: 20 },
     ];
     
     setPopularTags(tags);
@@ -269,15 +266,26 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
               WebkitBackgroundClip: "text",
               color: "transparent"
             }}>Popular Tags</h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="space-y-2 px-1">
               {popularTags.map((tag) => (
                 <a
                   key={tag.name}
                   href={`/#tag-${tag.name}`}
-                  className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-400/10 to-purple-500/10 border border-blue-400/20 px-2.5 py-0.5 text-xs font-medium text-primary hover:from-blue-400/20 hover:to-purple-500/20 transition-colors duration-300 hover:shadow-sm"
+                  className="relative flex items-center justify-between rounded-lg py-2 px-3 group transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-purple-500/10"
                   onClick={(e) => handleTagClick(tag.name, e)}
                 >
-                  {tag.name}
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-[10px] font-bold text-white shadow-sm transition-transform duration-300 group-hover:scale-110">
+                      {tag.name.slice(0, 2).toUpperCase()}
+                    </span>
+                    <span className="text-sm font-medium transition-colors duration-300 group-hover:text-primary">
+                      {tag.name}
+                    </span>
+                  </div>
+                  <span className="rounded-full bg-muted px-2 text-xs text-muted-foreground transition-colors duration-300 group-hover:bg-blue-500/20 group-hover:text-blue-600">
+                    {tag.count}
+                  </span>
+                  <span className="absolute bottom-0 left-0 h-[1px] w-0 bg-gradient-to-r from-blue-400 to-purple-500 transition-all duration-300 group-hover:w-full rounded-full"></span>
                 </a>
               ))}
             </div>

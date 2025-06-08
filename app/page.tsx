@@ -52,7 +52,6 @@ export default function Home() {
           <GameGrid
             title="New Games"
             games={newGames}
-            viewMoreLink="/#new-games"
             columns={4}
           />
         </section>
@@ -72,7 +71,6 @@ export default function Home() {
           <GameGrid
             title="2D Games"
             games={games2d}
-            viewMoreLink="/#tag-2d"
             columns={4}
           />
         </section>
@@ -81,7 +79,6 @@ export default function Home() {
           <GameGrid
             title="3D Games"
             games={games3d}
-            viewMoreLink="/#tag-3d"
             columns={4}
           />
         </section>
@@ -90,7 +87,6 @@ export default function Home() {
           <GameGrid
             title="Car Games"
             games={carGames}
-            viewMoreLink="/#tag-car"
             columns={4}
           />
         </section>
@@ -99,7 +95,6 @@ export default function Home() {
           <GameGrid
             title="Driving Games"
             games={drivingGames}
-            viewMoreLink="/#tag-driving"
             columns={4}
           />
         </section>
@@ -108,7 +103,6 @@ export default function Home() {
           <GameGrid
             title="Multiplayer Games"
             games={multiplayerGames}
-            viewMoreLink="/#tag-multiplayer"
             columns={4}
           />
         </section>
@@ -118,7 +112,6 @@ export default function Home() {
           <GameGrid
             title="Zombie Games"
             games={zombieGames}
-            viewMoreLink="/#tag-zombie"
             columns={4}
           />
         </section>
@@ -127,7 +120,6 @@ export default function Home() {
           <GameGrid
             title="Physics Games"
             games={physicsGames}
-            viewMoreLink="/#tag-physics"
             columns={4}
           />
         </section>
@@ -136,7 +128,6 @@ export default function Home() {
           <GameGrid
             title="Simulator Games"
             games={simulatorGames}
-            viewMoreLink="/#tag-simulator"
             columns={4}
           />
         </section>
@@ -145,7 +136,6 @@ export default function Home() {
           <GameGrid
             title="Stunt Games"
             games={stuntGames}
-            viewMoreLink="/#tag-stunt"
             columns={4}
           />
         </section>

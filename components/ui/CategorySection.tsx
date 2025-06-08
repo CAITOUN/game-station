@@ -17,7 +17,6 @@ export function CategorySection({ title, games, slug }: CategorySectionProps) {
       <GameGrid
         title={title}
         games={games}
-        viewMoreLink={`/#category-${slug}`}
         columns={4}
       />
     </section>

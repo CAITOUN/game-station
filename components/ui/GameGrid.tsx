@@ -23,14 +23,6 @@ export function GameGrid({
       {title && (
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
-          {viewMoreLink && (
-            <a
-              href={viewMoreLink}
-              className="text-sm text-primary hover:underline"
-            >
-              View more
-            </a>
-          )}
         </div>
       )}
 
