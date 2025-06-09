@@ -44,6 +44,9 @@ export default function Home() {
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-8">
+        {/* Main Heading - Hidden visually but available for SEO */}
+        <h1 className="sr-only">GamePlayGo - Play Free Online Games</h1>
+        
         {/* Featured Games Section */}
         <FeaturedGames games={featuredGames} />
         

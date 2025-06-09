@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { X, ChevronLeft, ChevronRight, Home, Gamepad2 } from "lucide-react";
+import { X, Home, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Category {
   name: string;
@@ -21,10 +22,9 @@ interface SidebarProps {
   mobile?: boolean;
   onClose?: () => void;
   collapsed?: boolean;
-  onToggleCollapse?: () => void;
 }
 
-export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCollapse }: SidebarProps) {
+export function Sidebar({ mobile = false, onClose, collapsed = false }: SidebarProps) {
   // Sample categories data - in a real app, this might come from an API
   const categories: Category[] = [
     { name: "Action", icon: "🔥", slug: "action" },
@@ -57,72 +57,65 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
 
   const handleCategoryClick = (slug: string, e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setActiveCategory(slug);
     
-    // Scroll to the category section
-    const categorySection = document.getElementById(`category-${slug}`);
-    if (categorySection) {
-      categorySection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      // If we're not on the homepage, navigate to homepage with category hash
-      router.push(`/#category-${slug}`);
-    }
-    
-    // Close mobile sidebar if needed
-    if (mobile && onClose) {
-      onClose();
-    }
+    const categorySlug = slug;
+    setTimeout(() => {
+      const categorySection = document.getElementById(`category-${categorySlug}`);
+      if (categorySection) {
+        categorySection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        router.push(`/#category-${categorySlug}`);
+      }
+      
+      if (mobile && onClose) {
+        onClose();
+      }
+    }, 0);
   };
 
   const handleTagClick = (tag: string, e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     
-    // Scroll to the tag section if it exists
-    const tagSection = document.getElementById(`tag-${tag}`);
-    if (tagSection) {
-      tagSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      // If we're not on the homepage, navigate to homepage with tag hash
-      router.push(`/#tag-${tag}`);
-    }
-    
-    // Close mobile sidebar if needed
-    if (mobile && onClose) {
-      onClose();
-    }
+    setTimeout(() => {
+      const tagSection = document.getElementById(`tag-${tag}`);
+      if (tagSection) {
+        tagSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        router.push(`/#tag-${tag}`);
+      }
+      
+      if (mobile && onClose) {
+        onClose();
+      }
+    }, 0);
   };
 
   const handleAllGamesClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setActiveCategory(null);
-    router.push("/");
     
-    // Close mobile sidebar if needed
-    if (mobile && onClose) {
-      onClose();
-    }
+    setTimeout(() => {
+      router.push("/");
+      
+      if (mobile && onClose) {
+        onClose();
+      }
+    }, 0);
   };
 
   // If collapsed, show only icons
   if (collapsed && !mobile) {
     return (
-      <aside className="h-full overflow-y-auto shadow-xl relative no-drag">
-        <div className="gradient-bg h-full py-4 px-2 border-r border-transparent bg-clip-border" 
+      <aside className="h-full w-full overflow-y-auto sidebar-scrollbar shadow-xl relative no-drag">
+        <div className="gradient-bg h-full w-full py-4 px-2 border-r border-transparent bg-clip-border" 
           style={{
-            backgroundImage: 'linear-gradient(to right, transparent, transparent), linear-gradient(to bottom, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.3))'
+            backgroundImage: 'linear-gradient(to right, transparent, transparent), linear-gradient(to bottom, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.3))',
+            minHeight: '100%'
           }}>
-          {/* Toggle button - 内嵌到侧边栏中 */}
-          {onToggleCollapse && (
-            <button 
-              onClick={onToggleCollapse}
-              className="absolute right-0 top-4 z-40 flex h-8 w-6 items-center justify-center text-white transition-colors duration-300 group overflow-hidden no-drag"
-              aria-label="Expand sidebar"
-            >
-              <div className="w-full h-full flex items-center justify-start pl-1 bg-gradient-to-r from-blue-400 to-purple-500">
-                <ChevronRight className="h-4 w-4" />
-              </div>
-            </button>
-          )}
           
           {/* Mini logo or identifier */}
           <div className="mb-6 flex justify-center">
@@ -134,39 +127,54 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
           <div className="space-y-6">
             <nav className="flex flex-col items-center space-y-4">
               {/* All Games Button */}
-              <Link
-                href="/"
-                className={`flex items-center justify-center rounded-full w-10 h-10 transition-all duration-300 relative overflow-hidden group ${
-                  activeCategory === null 
-                    ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary" 
-                    : "text-sidebar-foreground hover:text-primary"
-                }`}
-                onClick={handleAllGamesClick}
-                title="All Games"
-              >
-                <Home className="h-5 w-5 relative z-10 transition-transform duration-300 group-hover:scale-110" />
-                <span className={`absolute bottom-0 left-0 right-0 mx-auto h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
-                  activeCategory === null ? "w-6" : "w-0 group-hover:w-6"
-                }`}></span>
-              </Link>
+              <TooltipProvider delayDuration={300}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      className={`sidebar-btn-focus flex items-center justify-center rounded-full w-10 h-10 transition-all duration-300 relative overflow-hidden group ${
+                        activeCategory === null 
+                          ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary" 
+                          : "text-sidebar-foreground hover:text-primary"
+                      }`}
+                      onClick={handleAllGamesClick}
+                    >
+                      <Home className="h-5 w-5 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+                      <span className={`absolute bottom-0 left-0 right-0 mx-auto h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
+                        activeCategory === null ? "w-6" : "w-0 group-hover:w-6"
+                      }`}></span>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>全部游戏</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               
               {categories.map((category) => (
-                <a
-                  key={category.slug}
-                  href={`/#category-${category.slug}`}
-                  className={`flex items-center justify-center rounded-full w-10 h-10 transition-all duration-300 relative overflow-hidden group ${
-                    activeCategory === category.slug 
-                      ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary" 
-                      : "text-sidebar-foreground hover:text-primary"
-                  }`}
-                  onClick={(e) => handleCategoryClick(category.slug, e)}
-                  title={category.name}
-                >
-                  <span className="text-xl relative z-10 transition-transform duration-300 group-hover:scale-110">{category.icon}</span>
-                  <span className={`absolute bottom-0 left-0 right-0 mx-auto h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
-                    activeCategory === category.slug ? "w-6" : "w-0 group-hover:w-6"
-                  }`}></span>
-                </a>
+                <TooltipProvider key={category.slug} delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        className={`sidebar-btn-focus flex items-center justify-center rounded-full w-10 h-10 transition-all duration-300 relative overflow-hidden group ${
+                          activeCategory === category.slug 
+                            ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary" 
+                            : "text-sidebar-foreground hover:text-primary"
+                        } focus:outline-none focus:ring-2 focus:ring-blue-400/40`}
+                        onClick={(e) => handleCategoryClick(category.slug, e)}
+                      >
+                        <span className="text-xl relative z-10 transition-transform duration-300 group-hover:scale-110">{category.icon}</span>
+                        <span className={`absolute bottom-0 left-0 right-0 mx-auto h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
+                          activeCategory === category.slug ? "w-6" : "w-0 group-hover:w-6"
+                        }`}></span>
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      <p>{category.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               ))}
             </nav>
             
@@ -181,10 +189,11 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
   }
 
   return (
-    <aside className={`${mobile ? '' : 'h-full'} overflow-y-auto shadow-xl relative no-drag`}>
-      <div className={`gradient-bg h-full p-4 ${mobile ? '' : 'border-r border-transparent bg-clip-border'}`} 
+    <aside className={`${mobile ? '' : 'h-full w-full'} overflow-y-auto sidebar-scrollbar shadow-xl relative no-drag`}>
+      <div className={`gradient-bg h-full w-full p-4 ${mobile ? '' : 'border-r border-transparent bg-clip-border'}`} 
         style={{
-          backgroundImage: mobile ? '' : 'linear-gradient(to right, transparent, transparent), linear-gradient(to bottom, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.3))'
+          backgroundImage: mobile ? '' : 'linear-gradient(to right, transparent, transparent), linear-gradient(to bottom, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.3))',
+          minHeight: '100%'
         }}>
         {mobile && onClose && (
           <div className="flex justify-between items-center mb-4">
@@ -200,18 +209,6 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
           </div>
         )}
         
-        {!mobile && onToggleCollapse && (
-                      <button 
-              onClick={onToggleCollapse}
-              className="absolute right-0 top-4 z-40 flex h-8 w-6 items-center justify-center text-white transition-colors duration-300 group overflow-hidden no-drag"
-              aria-label="Collapse sidebar"
-            >
-            <div className="w-full h-full flex items-center justify-end pr-1 bg-gradient-to-r from-blue-400 to-purple-500">
-              <ChevronLeft className="h-4 w-4" />
-            </div>
-          </button>
-        )}
-        
         <div className="space-y-6">
           <div>
             <h2 className="mb-2 text-lg font-semibold tracking-tight" style={{
@@ -222,13 +219,13 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
             }}>Categories</h2>
             <nav className="space-y-1">
               {/* All Games Button */}
-              <Link
-                href="/"
-                className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-300 relative overflow-hidden group ${
+              <button
+                type="button"
+                className={`sidebar-btn-focus w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-300 relative overflow-hidden group ${
                   activeCategory === null 
                     ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary font-medium" 
                     : "text-sidebar-foreground hover:text-primary"
-                }`}
+                } focus:outline-none focus:ring-2 focus:ring-blue-400/40`}
                 onClick={handleAllGamesClick}
               >
                 <Home className="h-4 w-4 relative z-10 transition-transform duration-300 group-hover:scale-110" />
@@ -236,17 +233,17 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
                 <span className={`absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
                   activeCategory === null ? "w-full" : "w-0 group-hover:w-full"
                 }`}></span>
-              </Link>
+              </button>
               
               {categories.map((category) => (
-                <a
+                <button
                   key={category.slug}
-                  href={`/#category-${category.slug}`}
-                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-300 relative overflow-hidden group ${
+                  type="button"
+                  className={`sidebar-btn-focus w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-300 relative overflow-hidden group ${
                     activeCategory === category.slug 
                       ? "bg-gradient-to-r from-blue-400/20 to-purple-500/20 text-primary font-medium" 
                       : "text-sidebar-foreground hover:text-primary"
-                  }`}
+                  } focus:outline-none focus:ring-2 focus:ring-blue-400/40`}
                   onClick={(e) => handleCategoryClick(category.slug, e)}
                 >
                   <span className="text-xl relative z-10 transition-transform duration-300 group-hover:scale-110">{category.icon}</span>
@@ -254,44 +251,37 @@ export function Sidebar({ mobile = false, onClose, collapsed = false, onToggleCo
                   <span className={`absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-blue-400 to-purple-500 transition-width duration-300 rounded-full ${
                     activeCategory === category.slug ? "w-full" : "w-0 group-hover:w-full"
                   }`}></span>
-                </a>
+                </button>
               ))}
-            </nav>
-          </div>
-
-          <div>
-            <h2 className="mb-2 text-lg font-semibold tracking-tight" style={{
-              backgroundImage: "linear-gradient(to right, #60a5fa, #a855f7)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              color: "transparent"
-            }}>Popular Tags</h2>
-            <div className="space-y-2 px-1">
-              {popularTags.map((tag) => (
-                <a
-                  key={tag.name}
-                  href={`/#tag-${tag.name}`}
-                  className="relative flex items-center justify-between rounded-lg py-2 px-3 group transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-purple-500/10"
-                  onClick={(e) => handleTagClick(tag.name, e)}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-[10px] font-bold text-white shadow-sm transition-transform duration-300 group-hover:scale-110">
-                      {tag.name.slice(0, 2).toUpperCase()}
-                    </span>
-                    <span className="text-sm font-medium transition-colors duration-300 group-hover:text-primary">
-                      {tag.name}
-                    </span>
+              
+              {/* Popular Tags Section */}
+              {popularTags.length > 0 && (
+                <div className="mt-6">
+                  <h2 className="mb-2 text-lg font-semibold tracking-tight" style={{
+                    backgroundImage: "linear-gradient(to right, #60a5fa, #a855f7)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent"
+                  }}>Popular Tags</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {popularTags.map((tag) => (
+                      <button
+                        key={tag.name}
+                        type="button"
+                        className="sidebar-btn-focus inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 focus:outline-none focus:ring-2 focus:ring-blue-400/40"
+                        onClick={(e) => handleTagClick(tag.name, e)}
+                      >
+                        <span>{tag.name}</span>
+                        <span className="ml-1 text-xs opacity-70">({tag.count})</span>
+                      </button>
+                    ))}
                   </div>
-                  <span className="rounded-full bg-muted px-2 text-xs text-muted-foreground transition-colors duration-300 group-hover:bg-blue-500/20 group-hover:text-blue-600">
-                    {tag.count}
-                  </span>
-                  <span className="absolute bottom-0 left-0 h-[1px] w-0 bg-gradient-to-r from-blue-400 to-purple-500 transition-all duration-300 group-hover:w-full rounded-full"></span>
-                </a>
-              ))}
-            </div>
+                </div>
+              )}
+            </nav>
           </div>
         </div>
       </div>
     </aside>
   );
-} 
+}
