@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://gameplaygo.vercel.app",
   },
+  other: {
+    "google-adsense-account": "ca-pub-4843958868558245",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
