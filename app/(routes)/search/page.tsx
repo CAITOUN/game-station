@@ -7,7 +7,7 @@ export default function SearchPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Page Title */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Game Search</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">Search Free Online Games - Find Your Next Adventure</h1>
           <p className="text-gray-400">Search functionality is coming soon</p>
         </div>
 

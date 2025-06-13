@@ -18,6 +18,24 @@ export default function Home() {
   const totalGames = getGamesCount();
   console.log(`Total games: ${totalGames}`);
   
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "GamePlayGo",
+    "url": "https://gameplaygo.com",
+    "description": "Play free online games instantly in your browser. No downloads needed.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "GamePlayGo"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://gameplaygo.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+  
   // Get game data
   const featuredGames = getSmartFeaturedGames(5); // 使用智能精选
   const newGames = getNewGames(12);
@@ -51,7 +69,24 @@ export default function Home() {
   
   return (
     <MainLayout>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      
       <div className="container mx-auto px-4 py-8">
+        {/* SEO-optimized H1 tag for homepage */}
+        <header className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            Free Online Games - Play Browser Games Instantly
+          </h1>
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+            Discover and play {totalGames}+ free online games directly in your browser. 
+            No downloads required - enjoy action, adventure, puzzle, racing and more game categories instantly.
+          </p>
+        </header>
+        
         {/* Featured Games Section */}
         <FeaturedGames games={featuredGames} />
         

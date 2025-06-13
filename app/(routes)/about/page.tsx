@@ -5,7 +5,7 @@ export default function AboutPage() {
   return (
     <SimpleLayout>
       <div className="py-8 md:py-12">
-        <h1 className="text-3xl font-bold tracking-tight mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">About GamePlayGo</h1>
+        <h1 className="text-3xl font-bold tracking-tight mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">About GamePlayGo - Free Online Gaming Platform</h1>
         
         <div className="space-y-6 max-w-3xl">
           <p className="text-lg">

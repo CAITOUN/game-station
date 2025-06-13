@@ -116,7 +116,9 @@ export default async function GamePage({ params }: GamePageProps) {
               
               {/* Game info */}
               <div className="flex-1">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">{game.title}</h1>
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                  Play {game.title} Online - Free Browser Game
+                </h1>
                 
                 {/* Game meta */}
                 <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-blue-100/70">
