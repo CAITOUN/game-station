@@ -75,17 +75,17 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
-      <div className="container mx-auto px-4 py-8">
-        {/* SEO-optimized H1 tag for homepage */}
-        <header className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Free Online Games - Play Browser Games Instantly
-          </h1>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            Discover and play {totalGames}+ free online games directly in your browser. 
-            No downloads required - enjoy action, adventure, puzzle, racing and more game categories instantly.
-          </p>
-        </header>
+              <div className="container mx-auto px-4 py-8">
+          {/* SEO-optimized H1 tag for homepage */}
+          <header className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              Free Online Games - Play Browser Games Instantly
+            </h1>
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+              Discover and play {totalGames}+ free online games directly in your browser. 
+              No downloads required - enjoy action, adventure, puzzle, racing and more game categories instantly.
+            </p>
+          </header>
         
         {/* Featured Games Section */}
         <FeaturedGames games={featuredGames} />

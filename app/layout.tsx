@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
-import { Analytics } from "@vercel/analytics/react";
+import GoogleAdSense from "@/components/layout/GoogleAdSense";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,31 +24,34 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://gameplaygo.com'), // 替换为您的实际域名
+  metadataBase: new URL("https://gameplaygo.vercel.app"),
   alternates: {
-    canonical: '/',
+    canonical: "https://gameplaygo.vercel.app",
+  },
+  other: {
+    "google-adsense-account": "ca-pub-4843958868558245",
   },
   openGraph: {
     title: "GamePlayGo - Play Free Online Games",
     description: "Play 280+ free online games instantly in your browser! No downloads needed. Action, adventure, puzzle, racing games and more.",
-    url: 'https://gameplaygo.com',
-    siteName: 'GamePlayGo',
+    url: "https://gameplaygo.vercel.app",
+    siteName: "GamePlayGo",
     images: [
       {
-        url: '/og-image.png', // 您需要添加这个图片
+        url: "/images/og-image.svg",
         width: 1200,
         height: 630,
-        alt: 'GamePlayGo - Free Online Games',
+        alt: "GamePlayGo - Free Online Games",
       },
     ],
-    locale: 'en_US',
-    type: 'website',
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'GamePlayGo - Play Free Online Games',
-    description: 'Play 280+ free online games instantly in your browser! No downloads needed.',
-    images: ['/og-image.png'], // 您需要添加这个图片
+    card: "summary_large_image",
+    title: "GamePlayGo - Play Free Online Games",
+    description: "Play 280+ free online games instantly in your browser! No downloads needed.",
+    images: ["/images/twitter-image.svg"],
   },
   robots: {
     index: true,
@@ -74,11 +77,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <GoogleAnalytics gaId="G-3WYWSVQW67" />
+      <GoogleAdSense adClientId="ca-pub-4843958868558245" />
       <body
         className={`${inter.className} antialiased`}
       >
         {children}
-        <Analytics />
       </body>
     </html>
   );

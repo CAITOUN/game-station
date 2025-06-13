@@ -71,6 +71,15 @@
     --sidebar-border: rgba(59, 130, 246, 0.3);
     --sidebar-foreground: rgba(255, 255, 255, 0.9);
     --radius: 0.625rem;
+    
+    /* 布局相关变量 */
+    --header-height: 4rem;
+    /* --footer-height: auto; */
+    --sidebar-width-expanded: 16rem;
+    --sidebar-width-collapsed: 3.5rem;
+    --sidebar-transition-duration: 300ms;
+    --sidebar-hover-delay: 200ms;
+    --sidebar-collapse-delay: 1000ms;
   }
 }
 
@@ -85,11 +94,36 @@
   }
 }
 
+/* 禁用所有元素的pointer-events属性，以确保鼠标事件能够正确触发 */
+.no-pointer-events {
+  pointer-events: none !important;
+}
+
+.pointer-events-auto {
+  pointer-events: auto !important;
+}
+
 .gradient-bg {
-  background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(28, 63, 116, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(28, 63, 116, 0.95) 100%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25);
   border-radius: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.gradient-bg::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.1) 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .gradient-border {
@@ -177,4 +211,197 @@
   user-drag: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* 侧边栏响应式样式 */
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+  overflow-y: auto;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  background-color: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+  margin: 4px 0;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(59, 130, 246, 0.3);
+  border-radius: 4px;
+}
+
+/* 侧边栏按钮焦点态和悬停效果 */
+.sidebar-btn-focus {
+  position: relative;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.sidebar-btn-focus:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.sidebar-btn-focus:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.sidebar-btn-focus::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #60a5fa, #a855f7);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.sidebar-btn-focus:hover::after,
+.sidebar-btn-focus:focus-visible::after {
+  width: 100%;
+}
+
+/* 添加点击效果 */
+.sidebar-btn-focus:active {
+  transform: scale(0.97);
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+/* 侧边栏展开/折叠动画效果 */
+.sidebar-container {
+  position: fixed;
+  left: 0;
+  top: var(--header-height);
+  bottom: 0;
+  z-index: 30;
+  transition: width var(--sidebar-transition-duration) ease;
+}
+
+.sidebar-collapsed,
+.sidebar-expanded {
+  transition: all var(--sidebar-transition-duration) ease;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* 增强按钮焦点可访问性 */
+button:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* 悬停触发区域 */
+.hover-trigger {
+  background-color: transparent;
+  cursor: pointer;
+  transition: width var(--sidebar-transition-duration) ease;
+}
+
+/* 悬停效果 */
+.hover-trigger:hover {
+  width: var(--sidebar-width-expanded);
+}
+
+.hover-trigger:hover + .sidebar-expanded {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 侧边栏悬停效果 */
+.sidebar-hover-effect {
+  transition-property: width, transform, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: var(--sidebar-transition-duration);
+  will-change: width, transform;
+  pointer-events: auto !important;
+  touch-action: auto !important;
+  user-select: none;
+}
+
+.sidebar-hover-effect:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.sidebar-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 确保鼠标事件能够正确触发 */
+.sidebar-hover-effect * {
+  pointer-events: auto;
+}
+
+/* 调试辅助类 */
+.debug-outline {
+  outline: 2px solid red;
+}
+
+.debug-outline-blue {
+  outline: 2px solid blue;
+}
+
+.debug-outline-green {
+  outline: 2px solid green;
+}
+
+/* 添加一个额外的触发区域 */
+.hover-trigger-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto;
+  background-color: rgba(255, 0, 0, 0.1); /* 仅在调试时可见 */
+}
+
+/* 侧边栏动画 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.sidebar-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.sidebar-fade-out {
+  animation: fadeOut 0.3s ease-in-out;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --sidebar-width-expanded: 100%;
+    --sidebar-width-collapsed: 0;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  :root {
+    --sidebar-width-expanded: 14rem;
+    --sidebar-width-collapsed: 3.5rem;
+  }
 }
