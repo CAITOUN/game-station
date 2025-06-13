@@ -51,9 +51,9 @@ export function SimilarGames({ games }: SimilarGamesProps) {
             </div>
             
             <div className="flex-shrink-0">
-              <span className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500/80 to-purple-600/80 h-8 w-8 text-xs font-medium text-white group-hover:from-blue-500 group-hover:to-purple-600 transition-colors shadow-lg group-hover:shadow-blue-500/20 transform group-hover:scale-110 transition-transform">
-                Play
-              </span>
+                              <span className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500/80 to-purple-600/80 h-8 w-8 text-xs font-medium text-white group-hover:from-blue-500 group-hover:to-purple-600 transition-colors shadow-lg group-hover:shadow-blue-500/20 transform group-hover:scale-110 transition-transform">
+                  Play
+                </span>
             </div>
           </Link>
         ))}

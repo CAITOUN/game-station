@@ -8,6 +8,7 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { GameFrame } from "@/components/ui/GameFrame";
 import { FullscreenButton } from "@/components/ui/FullscreenButton";
 import { SimilarGames } from "@/components/ui/SimilarGames";
+import { GameTracker } from "@/components/ui/GameTracker";
 
 import { getGameById, getGamesByCategory } from "@/lib/games";
 
@@ -66,6 +67,9 @@ export default async function GamePage({ params }: GamePageProps) {
   
   return (
     <MainLayout>
+      {/* 添加游戏访问统计跟踪 */}
+      <GameTracker gameId={game.id} gameTags={game.tags} />
+      
       <div className="relative">
         {/* Background blur effect */}
         <div className="absolute inset-0 overflow-hidden -z-10 pointer-events-none">

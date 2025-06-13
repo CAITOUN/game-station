@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Gamepad2 } from "lucide-react";
+import { Menu, X, Gamepad2, Search } from "lucide-react";
 import { Sidebar } from "./Sidebar";
 
 export function Header() {
@@ -61,6 +61,12 @@ export function Header() {
             
             {/* Navigation links - right aligned */}
             <nav className="flex items-center gap-4">
+              <Link href="/search" className="hidden md:block">
+                <Button variant="outline" size="sm" className="text-sm font-medium border-blue-500/30 text-blue-400 hover:bg-blue-500/10 hover:border-blue-400 transition-all">
+                  <Search className="h-4 w-4 mr-2" />
+                  Search
+                </Button>
+              </Link>
               <Link href="/about" className="hidden md:block">
                 <Button variant="default" size="sm" className="text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-md hover:shadow-lg transition-all">
                   About
@@ -85,6 +91,12 @@ export function Header() {
               <div className="mt-6 pt-4 relative">
                 <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-blue-400/20 to-purple-500/20"></div>
                 <div className="space-y-3 mt-2">
+                  <Link href="/search" className="block">
+                    <Button variant="outline" size="sm" className="w-full justify-start text-sm font-medium border-blue-500/30 text-blue-400 hover:bg-blue-500/10">
+                      <Search className="h-4 w-4 mr-2" />
+                      Search
+                    </Button>
+                  </Link>
                   <Link href="/about" className="block">
                     <Button variant="default" size="sm" className="w-full justify-start text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 shadow-md">
                       About

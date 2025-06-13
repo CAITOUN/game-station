@@ -2,11 +2,15 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { FeaturedGames } from "@/components/ui/FeaturedGames";
 import { GameGrid } from "@/components/ui/GameGrid";
 import { CategorySection } from "@/components/ui/CategorySection";
+import { RecommendedSection } from "@/components/ui/RecommendedSection";
+import { WeeklyPopularSection } from "@/components/ui/WeeklyPopularSection";
 import { 
   getFeaturedGames, 
   getNewGames, 
   getGamesByCategory,
-  getGamesCount
+  getGamesCount,
+  getSmartFeaturedGames,
+  getPopularGames
 } from "@/lib/games";
 
 export default function Home() {
@@ -15,8 +19,12 @@ export default function Home() {
   console.log(`Total games: ${totalGames}`);
   
   // Get game data
-  const featuredGames = getFeaturedGames(5);
+  const featuredGames = getSmartFeaturedGames(5); // 使用智能精选
   const newGames = getNewGames(12);
+  
+  // 获取热门游戏作为推荐组件的备用数据
+  const popularGamesForRecommendations = getPopularGames(12);
+  const popularGamesForWeekly = getPopularGames(12);
   
   // Get games by categories
   const actionGames = getGamesByCategory("action", 8);
@@ -46,6 +54,19 @@ export default function Home() {
       <div className="container mx-auto px-4 py-8">
         {/* Featured Games Section */}
         <FeaturedGames games={featuredGames} />
+        
+        {/* 个性化推荐区域 */}
+        <RecommendedSection 
+          fallbackGames={popularGamesForRecommendations}
+          popularGames={popularGamesForRecommendations}
+          columns={4}
+        />
+        
+        {/* 本周热门区域 */}
+        <WeeklyPopularSection 
+          games={popularGamesForWeekly}
+          columns={4}
+        />
         
         {/* New Games Section */}
         <section className="py-8 scroll-mt-20" id="new-games">
