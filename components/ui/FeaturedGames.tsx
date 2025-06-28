@@ -11,12 +11,6 @@ export function FeaturedGames({ games }: FeaturedGamesProps) {
     return null;
   }
 
-  // Use the first game as the main featured game
-  const mainGame = games[0];
-  
-  // Use the rest for the grid
-  const otherGames = games.slice(1);
-
   return (
     <section className="py-8">
       <h2 className="text-2xl font-bold tracking-tight mb-4" style={{
@@ -26,56 +20,29 @@ export function FeaturedGames({ games }: FeaturedGamesProps) {
         color: "transparent"
       }}>Featured Games</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Main featured game */}
-        <Link href={`/games/${mainGame.id}`} className="group">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-lg gradient-border">
-            <div className="relative h-full w-full">
-              <Image
-                src={mainGame.image}
-                alt={mainGame.title}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              <div className="absolute bottom-0 p-4">
-                <h3 className="text-xl font-bold text-white">{mainGame.title}</h3>
-                <p className="text-sm text-white/80 line-clamp-2 mt-1">
-                  {mainGame.description}
-                </p>
-                <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground mt-2">
-                  Featured
-                </span>
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Grid of other featured games */}
-        <div className="grid grid-cols-2 gap-4">
-          {otherGames.slice(0, 4).map((game) => (
-            <Link key={game.id} href={`/games/${game.id}`} className="group">
-              <div className="relative aspect-[16/9] overflow-hidden rounded-lg gradient-border">
-                <div className="relative h-full w-full">
-                  <Image
-                    src={game.image}
-                    alt={game.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  <div className="absolute bottom-0 p-2">
-                    <h3 className="text-sm font-bold text-white line-clamp-1">
-                      {game.title}
-                    </h3>
-                  </div>
+      {/* 全部使用小布局的网格，支持响应式 */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {games.map((game) => (
+          <Link key={game.id} href={`/games/${game.id}`} className="group">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg gradient-border">
+              <div className="relative h-full w-full">
+                <Image
+                  src={game.image}
+                  alt={game.title}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  unoptimized
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                <div className="absolute bottom-0 p-2">
+                  <h3 className="text-sm font-bold text-white line-clamp-1">
+                    {game.title}
+                  </h3>
                 </div>
               </div>
-            </Link>
-          ))}
-        </div>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   );

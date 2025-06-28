@@ -12,11 +12,25 @@ export function GameGrid({
   games,
   title,
   viewMoreLink,
-  columns = 4,
+  columns = 6,
 }: GameGridProps) {
   if (games.length === 0) {
     return null;
   }
+
+  // 动态生成网格类名
+  const getGridCols = () => {
+    switch (columns) {
+      case 6:
+        return "grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6";
+      case 4:
+        return "grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
+      case 3:
+        return "grid gap-4 sm:grid-cols-2 md:grid-cols-3";
+      default:
+        return "grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6";
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -26,9 +40,7 @@ export function GameGrid({
         </div>
       )}
 
-      <div
-        className={`grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-${columns}`}
-      >
+      <div className={getGridCols()}>
         {games.map((game) => (
           <GameCard
             key={game.id}

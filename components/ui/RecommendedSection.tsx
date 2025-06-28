@@ -16,7 +16,7 @@ export function RecommendedSection({
   fallbackGames, 
   popularGames,
   title = "推荐给你", 
-  columns = 4 
+  columns = 6 
 }: RecommendedSectionProps) {
   const [recommendedGames, setRecommendedGames] = useState<Game[]>(fallbackGames);
   const [userType, setUserType] = useState<'new' | 'returning'>('new');
@@ -38,6 +38,20 @@ export function RecommendedSection({
     }
   }, [popularGames]);
 
+  // 动态生成网格类名
+  const getGridCols = () => {
+    switch (columns) {
+      case 6:
+        return "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4";
+      case 4:
+        return "grid grid-cols-2 md:grid-cols-4 gap-4";
+      case 3:
+        return "grid grid-cols-2 md:grid-cols-3 gap-4";
+      default:
+        return "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4";
+    }
+  };
+
   const displayTitle = userType === 'returning' ? 'Recommended for You' : 'Popular Games';
 
   return (
@@ -53,7 +67,7 @@ export function RecommendedSection({
         </h2>
       </div>
       
-      <div className={`grid grid-cols-2 md:grid-cols-${columns} gap-4`}>
+      <div className={getGridCols()}>
         {recommendedGames.map((game) => (
           <GameCard 
             key={game.id} 

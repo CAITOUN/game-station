@@ -22,11 +22,11 @@ export function GameCard({
   isFeatured = false,
 }: GameCardProps) {
   // Convert tags string to array
-  const tagList = tags.split(",");
+  const tagList = tags.split(",").map(tag => tag.trim());
   
   // 获取游戏类型标签，用于角标显示
   const gameType = tagList.find(tag => 
-    ["action", "racing", "puzzle", "adventure", "shooter", "strategy", "sports", "arcade"].includes(tag.trim().toLowerCase())
+    ["action", "racing", "puzzle", "adventure", "shooter", "strategy", "sports", "arcade"].includes(tag.toLowerCase())
   );
   
   // 根据标签生成一个随机特性
@@ -45,16 +45,35 @@ export function GameCard({
   // 仅为一部分游戏显示随机特性标签（比如ID能被3整除的游戏）
   const shouldShowRandomFeature = id % 3 === 0;
   
+  // 处理标签显示逻辑 - 限制长度和数量以保持统一
+  const getDisplayTags = () => {
+    // 过滤掉游戏类型标签（因为已经在角标显示）
+    const filteredTags = tagList.filter(tag => 
+      !["action", "racing", "puzzle", "adventure", "shooter", "strategy", "sports", "arcade"].includes(tag.toLowerCase())
+    );
+    
+    // 限制标签长度，超过8个字符的标签截断
+    const processedTags = filteredTags.map(tag => 
+      tag.length > 8 ? tag.substring(0, 8) + "..." : tag
+    );
+    
+    // 只显示前2个标签，确保不换行
+    return processedTags.slice(0, 2);
+  };
+  
+  const displayTags = getDisplayTags();
+  const remainingCount = tagList.length - displayTags.length - (gameType ? 1 : 0);
+
   return (
     <Link href={`/games/${id}`} className="group">
-      <div className="relative overflow-hidden rounded-lg transition-all duration-300 hover:shadow-xl gradient-border">
-        <div className="aspect-[16/9] w-full overflow-hidden rounded-t-lg bg-muted">
+      <div className="relative overflow-hidden rounded-lg transition-all duration-300 hover:shadow-xl gradient-border h-full flex flex-col">
+        <div className="aspect-[4/3] w-full overflow-hidden rounded-t-lg bg-muted">
           <div className="relative h-full w-full">
             <Image
               src={image}
               alt={title}
-              width={320}
-              height={180}
+              width={512}
+              height={384}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               unoptimized
             />
@@ -93,27 +112,30 @@ export function GameCard({
           {gameType && (
             <div className="absolute top-0 left-0">
               <div className="bg-gradient-to-r from-primary to-primary/80 text-xs font-bold text-primary-foreground py-1 px-3 rounded-br-lg shadow-md">
-                {gameType.trim().toUpperCase()}
+                {gameType.toUpperCase()}
               </div>
             </div>
           )}
         </div>
         
-        <div className="p-3 gradient-card rounded-b-lg">
-          <h3 className="font-medium line-clamp-1">{title}</h3>
+        {/* 固定高度的内容区域 */}
+        <div className="p-3 gradient-card rounded-b-lg flex-1 flex flex-col justify-between">
+          <h3 className="font-medium line-clamp-1 mb-2">{title}</h3>
           
-          <div className="mt-1 flex flex-wrap gap-1">
-            {tagList.slice(0, 3).map((tag) => (
+          {/* 固定高度的标签区域，避免换行 */}
+          <div className="h-6 flex items-center gap-1 overflow-hidden">
+            {displayTags.map((tag, index) => (
               <span
-                key={tag}
-                className="inline-flex items-center rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-xs text-primary"
+                key={index}
+                className="inline-flex items-center rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-xs text-primary whitespace-nowrap"
+                title={tagList[index]} // 完整标签显示在tooltip中
               >
-                {tag.trim()}
+                {tag}
               </span>
             ))}
-            {tagList.length > 3 && (
-              <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-                +{tagList.length - 3}
+            {remainingCount > 0 && (
+              <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground whitespace-nowrap">
+                +{remainingCount}
               </span>
             )}
           </div>

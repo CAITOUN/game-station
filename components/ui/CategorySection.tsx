@@ -17,7 +17,7 @@ export function CategorySection({ title, games, slug }: CategorySectionProps) {
       <GameGrid
         title={title}
         games={games}
-        columns={4}
+        columns={6}
       />
     </section>
   );

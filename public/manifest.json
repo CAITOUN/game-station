@@ -1,0 +1,67 @@
+{
+  "name": "GamePlayGo - Free Online Games",
+  "short_name": "GamePlayGo",
+  "description": "Play 458+ free online games instantly in your browser! No downloads needed.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "categories": ["games", "entertainment"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon-simple.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/og-image.svg",
+      "sizes": "1200x630",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse All Games",
+      "short_name": "All Games",
+      "description": "Browse all available games",
+      "url": "/?utm_source=homescreen",
+      "icons": [
+        {
+          "src": "/icon-simple.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Action Games",
+      "short_name": "Action",
+      "description": "Play action games",
+      "url": "/?category=action&utm_source=homescreen",
+      "icons": [
+        {
+          "src": "/icon-simple.svg",
+          "sizes": "96x96", 
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+} 

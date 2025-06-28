@@ -10,8 +10,22 @@ interface WeeklyPopularSectionProps {
 export function WeeklyPopularSection({ 
   games, 
   title = "Weekly Popular", 
-  columns = 4 
+  columns = 6 
 }: WeeklyPopularSectionProps) {
+  // 动态生成网格类名
+  const getGridCols = () => {
+    switch (columns) {
+      case 6:
+        return "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4";
+      case 4:
+        return "grid grid-cols-2 md:grid-cols-4 gap-4";
+      case 3:
+        return "grid grid-cols-2 md:grid-cols-3 gap-4";
+      default:
+        return "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4";
+    }
+  };
+
   return (
     <section className="py-8 scroll-mt-20" id="weekly-popular">
       <div className="flex items-center justify-between mb-6">
@@ -23,7 +37,7 @@ export function WeeklyPopularSection({
         </h2>
       </div>
       
-      <div className={`grid grid-cols-2 md:grid-cols-${columns} gap-4`}>
+      <div className={getGridCols()}>
         {games.map((game, index) => (
           <GameCard 
             key={game.id} 
