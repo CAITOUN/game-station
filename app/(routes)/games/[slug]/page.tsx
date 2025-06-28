@@ -9,6 +9,7 @@ import { GameFrame } from "@/components/ui/GameFrame";
 import { FullscreenButton } from "@/components/ui/FullscreenButton";
 import { SimilarGames } from "@/components/ui/SimilarGames";
 import { GameTracker } from "@/components/ui/GameTracker";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 import { getGameById, getGamesByCategory } from "@/lib/games";
 
@@ -78,8 +79,45 @@ export default async function GamePage({ params }: GamePageProps) {
   // Extract tags for display
   const tagList = game.tags.split(",").map(tag => tag.trim());
   
+  // 面包屑结构化数据
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "首页",
+        "item": "https://game-station.games/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "游戏",
+        "item": "https://game-station.games/games"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": firstTag.charAt(0).toUpperCase() + firstTag.slice(1),
+        "item": `https://game-station.games/games?category=${encodeURIComponent(firstTag)}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": game.title
+      }
+    ]
+  };
+
   return (
     <MainLayout>
+      {/* 结构化数据 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
+      />
+      
       {/* 添加游戏访问统计跟踪 */}
       <GameTracker gameId={game.id} gameTags={game.tags} />
       
@@ -99,15 +137,16 @@ export default async function GamePage({ params }: GamePageProps) {
         </div>
         
         <div className="w-full max-w-[1400px] mx-auto px-4 py-4 md:py-6 relative z-10">
-          {/* Top navigation */}
-          <div className="flex justify-between items-center mb-6">
-            <Link 
-              href="/" 
-              className="inline-flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors group"
-            >
-              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-              <span>Back to Games</span>
-            </Link>
+          {/* 面包屑导航 */}
+          <div className="mb-6">
+            <Breadcrumb 
+              items={[
+                { label: "游戏", href: "/games" },
+                { label: firstTag.charAt(0).toUpperCase() + firstTag.slice(1), href: `/games?category=${encodeURIComponent(firstTag)}` },
+                { label: game.title }
+              ]}
+              className="text-blue-200/80"
+            />
           </div>
           
           {/* Game header */}

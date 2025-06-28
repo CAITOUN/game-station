@@ -66,7 +66,7 @@ export function GameCard({
 
   return (
     <Link href={`/games/${id}`} className="group">
-      <div className="relative overflow-hidden rounded-lg transition-all duration-300 hover:shadow-xl gradient-border h-full flex flex-col">
+      <div className="game-card card-hover-effect h-full flex flex-col animate-fade-in-up">
         <div className="aspect-[4/3] w-full overflow-hidden rounded-t-lg bg-muted">
           <div className="relative h-full w-full">
             <Image
@@ -119,7 +119,7 @@ export function GameCard({
         </div>
         
         {/* 固定高度的内容区域 */}
-        <div className="p-3 gradient-card rounded-b-lg flex-1 flex flex-col justify-between">
+        <div className="p-3 rounded-b-lg flex-1 flex flex-col justify-between bg-gradient-to-b from-transparent to-black/10">
           <h3 className="font-medium line-clamp-1 mb-2">{title}</h3>
           
           {/* 固定高度的标签区域，避免换行 */}
@@ -127,7 +127,7 @@ export function GameCard({
             {displayTags.map((tag, index) => (
               <span
                 key={index}
-                className="inline-flex items-center rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-xs text-primary whitespace-nowrap"
+                className="game-tag inline-flex items-center rounded-full px-2 py-0.5 text-xs whitespace-nowrap"
                 title={tagList[index]} // 完整标签显示在tooltip中
               >
                 {tag}

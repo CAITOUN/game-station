@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL || 'https://example.com',
+  siteUrl: process.env.SITE_URL || 'https://game-station.games',
   generateRobotsTxt: true,
   changefreq: 'daily',
   priority: 0.7,
@@ -8,7 +8,7 @@ module.exports = {
   exclude: ['/server-sitemap.xml'],
   robotsTxtOptions: {
     additionalSitemaps: [
-      'https://example.com/server-sitemap.xml',
+      'https://game-station.games/server-sitemap.xml',
     ],
   },
 } 

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
+import GameBackground from "@/components/ui/GameBackground";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -74,7 +75,10 @@ export function MainLayout({ children }: MainLayoutProps) {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col relative">
+      {/* 动态游戏背景 */}
+      <GameBackground particleCount={30} />
+      
       <Header />
       <div className="flex flex-1 pt-16">
         {/* 使用React状态和事件处理实现自动展开/折叠功能 */}

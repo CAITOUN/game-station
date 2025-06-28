@@ -15,10 +15,8 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-sm">
-        <div className="gradient-bg border-b border-transparent bg-clip-border" style={{
-          backgroundImage: 'linear-gradient(to right, transparent, transparent), linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.2))'
-        }}>
+      <header className="fixed top-0 left-0 right-0 z-40">
+        <div className="gradient-bg border-b border-blue-500/20 shadow-lg shadow-blue-500/10">
           <div className="flex h-16 items-center px-4 w-full">
             <div className="flex items-center gap-4">
               {/* Mobile menu button */}
@@ -62,13 +60,13 @@ export function Header() {
             {/* Navigation links - right aligned */}
             <nav className="flex items-center gap-4">
               <Link href="/search" className="hidden md:block">
-                <Button variant="outline" size="sm" className="text-sm font-medium border-blue-500/30 text-blue-400 hover:bg-blue-500/10 hover:border-blue-400 transition-all">
+                <Button variant="outline" size="sm" className="game-tag text-sm font-medium">
                   <Search className="h-4 w-4 mr-2" />
                   Search
                 </Button>
               </Link>
               <Link href="/about" className="hidden md:block">
-                <Button variant="default" size="sm" className="text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-md hover:shadow-lg transition-all">
+                <Button variant="default" size="sm" className="glow-button text-sm font-medium text-white">
                   About
                 </Button>
               </Link>
@@ -79,11 +77,8 @@ export function Header() {
       
       {/* Mobile sidebar overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm md:hidden pt-16">
-          <div className="fixed left-0 top-16 z-50 w-64 h-[calc(100vh-4rem)] overflow-y-auto gradient-bg border-r border-transparent bg-clip-border animate-in slide-in-from-left" 
-            style={{
-              backgroundImage: 'linear-gradient(to right, transparent, transparent), linear-gradient(to bottom, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.2))'
-            }}>
+        <div className="fixed inset-0 z-50 bg-background/90 backdrop-blur-md md:hidden pt-16">
+          <div className="fixed left-0 top-16 z-50 w-64 h-[calc(100vh-4rem)] overflow-y-auto gradient-bg border-r border-blue-500/20 animate-in slide-in-from-left shadow-2xl shadow-blue-500/10">
             <div className="p-4">
               <Sidebar mobile onClose={() => setMobileMenuOpen(false)} />
               
@@ -92,13 +87,13 @@ export function Header() {
                 <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-blue-400/20 to-purple-500/20"></div>
                 <div className="space-y-3 mt-2">
                   <Link href="/search" className="block">
-                    <Button variant="outline" size="sm" className="w-full justify-start text-sm font-medium border-blue-500/30 text-blue-400 hover:bg-blue-500/10">
+                    <Button variant="outline" size="sm" className="w-full justify-start game-tag text-sm font-medium">
                       <Search className="h-4 w-4 mr-2" />
                       Search
                     </Button>
                   </Link>
                   <Link href="/about" className="block">
-                    <Button variant="default" size="sm" className="w-full justify-start text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 shadow-md">
+                    <Button variant="default" size="sm" className="w-full justify-start glow-button text-sm font-medium text-white">
                       About
                     </Button>
                   </Link>

@@ -49,32 +49,47 @@
 
 @layer base {
   :root {
-    --background: 222 47% 11%;
+    /* 深空游戏主题配色 */
+    --background: 220 50% 6%;  /* 更深的背景 */
     --foreground: 210 40% 98%;
-    --card: 222 47% 11%;
+    --card: 220 45% 8%;  /* 稍微亮一点的卡片 */
     --card-foreground: 210 40% 98%;
-    --popover: 222 47% 11%;
+    --popover: 220 45% 8%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217 33% 17%;
+    
+    /* 霓虹蓝紫主色调 */
+    --primary: 217 91% 60%;  /* 霓虹蓝 */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 258 45% 25%;  /* 深紫色 */
     --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 216 34% 17%;
+    
+    /* 增强的辅助色 */
+    --muted: 220 40% 12%;
+    --muted-foreground: 215 20% 70%;
+    --accent: 258 60% 35%;  /* 紫色强调 */
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+    
+    --destructive: 0 65% 50%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 224 76% 48%;
-    --sidebar-border: rgba(59, 130, 246, 0.3);
-    --sidebar-foreground: rgba(255, 255, 255, 0.9);
-    --radius: 0.625rem;
+    --border: 220 40% 15%;  /* 更明显的边框 */
+    --input: 220 40% 12%;
+    --ring: 217 91% 60%;
+    
+    /* 侧边栏配色 */
+    --sidebar-border: rgba(59, 130, 246, 0.4);
+    --sidebar-foreground: rgba(255, 255, 255, 0.95);
+    --radius: 0.75rem;  /* 稍大的圆角 */
+    
+    /* 游戏主题特殊颜色 */
+    --neon-blue: 217 91% 60%;
+    --neon-purple: 258 100% 70%;
+    --neon-cyan: 180 100% 70%;
+    --neon-pink: 330 100% 70%;
+    --glow-primary: rgba(59, 130, 246, 0.5);
+    --glow-secondary: rgba(147, 51, 234, 0.5);
     
     /* 布局相关变量 */
     --header-height: 4rem;
-    /* --footer-height: auto; */
     --sidebar-width-expanded: 16rem;
     --sidebar-width-collapsed: 3.5rem;
     --sidebar-transition-duration: 300ms;
@@ -87,11 +102,123 @@
   * {
     border-color: hsl(var(--border));
   }
+  
   body {
-    background-color: hsl(var(--background));
+    background: hsl(var(--background));
     color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
+    position: relative;
+    overflow-x: hidden;
   }
+  
+  /* 动态星空背景 */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -3;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(255, 51, 136, 0.08) 0%, transparent 50%),
+      linear-gradient(180deg, hsl(220 50% 6%) 0%, hsl(220 45% 4%) 50%, hsl(220 50% 6%) 100%);
+    animation: backgroundShift 20s ease-in-out infinite;
+  }
+  
+  /* 星空粒子效果 */
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+    background-image: 
+      radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.3) 50%, transparent 50%),
+      radial-gradient(1px 1px at 40px 70px, rgba(147, 51, 234, 0.4) 50%, transparent 50%),
+      radial-gradient(1px 1px at 90px 40px, rgba(59, 130, 246, 0.4) 50%, transparent 50%),
+      radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.2) 50%, transparent 50%),
+      radial-gradient(1px 1px at 160px 30px, rgba(147, 51, 234, 0.3) 50%, transparent 50%);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: stars 50s linear infinite;
+  }
+}
+
+/* 背景动画 */
+@keyframes backgroundShift {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.05);
+  }
+}
+
+@keyframes stars {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100px); }
+}
+
+@keyframes shimmerSlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* 脉冲发光动画 */
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 
+      0 0 15px rgba(59, 130, 246, 0.1),
+      0 8px 25px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 25px rgba(59, 130, 246, 0.2),
+      0 0 15px rgba(147, 51, 234, 0.1),
+      0 8px 25px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* 浮动动画 */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(1deg); }
+  66% { transform: translateY(-5px) rotate(-1deg); }
+}
+
+/* 渐现动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 实用动画类 */
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 /* 禁用所有元素的pointer-events属性，以确保鼠标事件能够正确触发 */
@@ -103,52 +230,128 @@
   pointer-events: auto !important;
 }
 
+/* 现代玻璃拟态背景 */
 .gradient-bg {
-  background: linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(28, 63, 116, 0.95) 100%);
-  background-attachment: fixed;
-  background-size: 100% 100%;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25);
-  border-radius: 0;
+  background: 
+    linear-gradient(135deg, 
+      rgba(59, 130, 246, 0.05) 0%, 
+      rgba(147, 51, 234, 0.08) 35%,
+      rgba(59, 130, 246, 0.06) 70%,
+      rgba(220, 38, 127, 0.05) 100%
+    );
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
   z-index: 1;
 }
 
-.gradient-bg::after {
+.gradient-bg::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.1) 100%);
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(59, 130, 246, 0.03) 50%,
+    transparent 70%
+  );
+  border-radius: inherit;
   pointer-events: none;
-  z-index: 0;
+  animation: shimmerSlow 3s ease-in-out infinite;
 }
 
+/* 霓虹发光边框 */
 .gradient-border {
-  border: 1px solid transparent;
   position: relative;
-  background-image: linear-gradient(to right, rgba(24, 38, 64, 0.8), rgba(24, 38, 64, 0.8)), 
-                    linear-gradient(135deg, rgba(59, 130, 246, 0.7), rgba(147, 51, 234, 0.7));
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  box-shadow: 0 10px 25px -5px rgba(14, 24, 41, 0.4);
+  background: 
+    linear-gradient(135deg, 
+      rgba(220, 38, 127, 0.08), 
+      rgba(147, 51, 234, 0.12), 
+      rgba(59, 130, 246, 0.08)
+    );
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid transparent;
+  border-image: linear-gradient(
+    135deg, 
+    rgba(59, 130, 246, 0.4), 
+    rgba(147, 51, 234, 0.6), 
+    rgba(220, 38, 127, 0.4)
+  ) 1;
+  box-shadow: 
+    0 0 20px rgba(59, 130, 246, 0.2),
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(
+    135deg, 
+    rgba(59, 130, 246, 0.6), 
+    rgba(147, 51, 234, 0.8), 
+    rgba(220, 38, 127, 0.6)
+  );
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+}
+
+/* 增强的悬停效果 */
 .card-hover-effect {
-  transition: all 0.3s ease;
-}
-.card-hover-effect:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
 }
 
+.card-hover-effect:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 0 30px rgba(59, 130, 246, 0.3),
+    0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* 特色游戏卡片 - 大卡片样式 */
 .featured-card {
   position: relative;
   overflow: hidden;
-  border-radius: 0.75rem;
-  height: 320px;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: 
+    linear-gradient(135deg, 
+      rgba(59, 130, 246, 0.1) 0%, 
+      rgba(147, 51, 234, 0.15) 50%,
+      rgba(220, 38, 127, 0.1) 100%
+    );
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 
+    0 0 25px rgba(59, 130, 246, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.featured-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 0 40px rgba(59, 130, 246, 0.25),
+    0 20px 50px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
 .featured-card-content {
@@ -158,25 +361,71 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 1.5rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  background: linear-gradient(
+    to top, 
+    rgba(0, 0, 0, 0.85) 0%, 
+    rgba(0, 0, 0, 0.4) 50%,
+    transparent 100%
+  );
 }
 
+/* 普通游戏卡片 - 新的科技风格 */
 .game-card {
   position: relative;
   overflow: hidden;
-  border-radius: 0.75rem;
+  border-radius: 0.875rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 玻璃拟态背景 */
+  background: 
+    linear-gradient(135deg, 
+      rgba(59, 130, 246, 0.08) 0%, 
+      rgba(147, 51, 234, 0.12) 50%,
+      rgba(220, 38, 127, 0.08) 100%
+    );
+  backdrop-filter: blur(16px) saturate(180%);
+  
+  /* 发光边框效果 */
   border: 1px solid transparent;
-  height: 220px;
-  transition: all 0.3s ease;
-  background-image: linear-gradient(to right, rgba(24, 38, 64, 0.85), rgba(24, 38, 64, 0.85)), 
-                    linear-gradient(135deg, rgba(59, 130, 246, 0.6), rgba(147, 51, 234, 0.6));
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  box-shadow: 0 8px 20px -4px rgba(14, 24, 41, 0.3);
+  background-clip: padding-box;
+  
+  /* 阴影和发光 */
+  box-shadow: 
+    0 0 15px rgba(59, 130, 246, 0.1),
+    0 8px 25px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
+
+.game-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg, 
+    rgba(59, 130, 246, 0.3), 
+    rgba(147, 51, 234, 0.4), 
+    rgba(220, 38, 127, 0.3)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+  z-index: -1;
+}
+
 .game-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.3);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 0 30px rgba(59, 130, 246, 0.25),
+    0 0 15px rgba(147, 51, 234, 0.15),
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.game-card:hover::before {
+  opacity: 0.1;
 }
 
 .game-card-content {
@@ -186,17 +435,111 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 1rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  background: linear-gradient(
+    to top, 
+    rgba(0, 0, 0, 0.85) 0%, 
+    rgba(0, 0, 0, 0.3) 60%,
+    transparent 100%
+  );
+  border-radius: inherit;
 }
 
+/* 分类标题 - 霓虹效果 */
 .category-heading {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  background: linear-gradient(
+    135deg, 
+    hsl(var(--neon-blue)) 0%, 
+    hsl(var(--neon-purple)) 50%,
+    hsl(var(--neon-cyan)) 100%
+  );
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, #60a5fa, #a855f7);
+  position: relative;
+  display: inline-block;
+}
+
+.category-heading::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%,
+    hsl(var(--neon-blue)) 20%,
+    hsl(var(--neon-purple)) 80%,
+    transparent 100%
+  );
+  border-radius: 1px;
+  opacity: 0.6;
+}
+
+/* 发光按钮效果 */
+.glow-button {
+  background: linear-gradient(
+    135deg, 
+    hsl(var(--primary)) 0%, 
+    hsl(var(--accent)) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 0 20px var(--glow-primary),
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.glow-button:hover {
+  box-shadow: 
+    0 0 30px var(--glow-primary),
+    0 0 15px var(--glow-secondary),
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.glow-button:hover::before {
+  left: 100%;
+}
+
+/* 游戏标签样式 */
+.game-tag {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.game-tag:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  transform: translateY(-1px);
 }
 
 /* 自定义过渡效果 */
